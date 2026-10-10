@@ -6,10 +6,12 @@ const port = Number(process.env.PORT) || 4000;
 
 try {
   await connectDB();
+  console.log("✅ Connected to MongoDB");
+
   app.listen(port, () => {
-    console.log(`Server listening on port ${port}`);
+    console.log(`🚀 Server listening on port ${port}`);
   });
 } catch (error) {
-  console.error("Failed to connect to MongoDB:", error);
+  console.error("❌ Failed to connect to MongoDB:", error);
   process.exitCode = 1;
 }

@@ -12,14 +12,22 @@ app.use(express.json());
 
 app.get("/api/health", (_req, res) => {
   const ready = mongoose.connection.readyState === 1;
-  res.status(ready ? 200 : 503).json({ status: ready ? "ok" : "unavailable" });
+
+  res.status(ready ? 200 : 503).json({
+    status: ready ? "ok" : "unavailable",
+    message: ready ? "API is running and connected to MongoDB" : "API is running but MongoDB is disconnected",
+    database: ready ? "connected" : "disconnected",
+  });
 });
 
 app.use("/api/auth", authRouter);
 app.use("/api/items", itemsRouter);
 
 app.use((_req, res) => {
-  res.status(404).json({ message: "Route not found" });
+  res.status(404).json({
+    message: "Route not found",
+    status: "not_found",
+  });
 });
 
 const errorHandler: ErrorRequestHandler = (error, _req, res, _next) => {
