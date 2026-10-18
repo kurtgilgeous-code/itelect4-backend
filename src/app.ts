@@ -3,6 +3,7 @@ import express from "express";
 import mongoose from "mongoose";
 import type { ErrorRequestHandler } from "express";
 import authRouter from "./routes/auth.js";
+import { aiRouter } from "./routes/ai.js";
 import itemsRouter from "./routes/items.js";
 
 const app = express();
@@ -22,6 +23,7 @@ app.get("/api/health", (_req, res) => {
 
 app.use("/api/auth", authRouter);
 app.use("/api/items", itemsRouter);
+app.use("/api/ai", aiRouter);
 
 app.use((_req, res) => {
   res.status(404).json({
