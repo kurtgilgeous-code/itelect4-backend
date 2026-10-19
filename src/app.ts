@@ -5,6 +5,7 @@ import type { ErrorRequestHandler } from "express";
 import authRouter from "./routes/auth.js";
 import categoriesRouter from "./routes/categories.js";
 import claimsRouter from "./routes/claims.js";
+import { aiRouter } from "./routes/ai.js";
 import itemsRouter from "./routes/items.js";
 import ensureDatabaseConnection from "./middleware/ensureDatabaseConnection.js";
 
@@ -55,6 +56,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/categories", categoriesRouter);
 app.use("/api/items", itemsRouter);
 app.use("/api/claims", claimsRouter);
+app.use("/api/ai", aiRouter);
 
 app.use((_req, res) => {
   res.status(404).json({
