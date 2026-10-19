@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 
 let connection: Promise<typeof mongoose> | null = null;
 
+mongoose.connection.on("disconnected", () => {
+  connection = null;
+});
+
 export function connectDB(): Promise<typeof mongoose> {
   const uri = process.env.MONGODB_URI;
   if (!uri) {

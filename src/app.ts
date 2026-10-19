@@ -19,16 +19,12 @@ app.use(
         return;
       }
 
-      const defaultDevelopmentOrigins =
-        process.env.NODE_ENV === "production"
-          ? ""
-          : "http://localhost:5173,http://localhost:5174";
-      const allowedOrigins = (process.env.CORS_ORIGIN ?? defaultDevelopmentOrigins)
+      const allowedOrigins = (process.env.CORS_ORIGIN ?? "")
         .split(",")
         .map((value) => value.trim())
         .filter(Boolean);
 
-      if (!allowedOrigins?.length) {
+      if (!allowedOrigins.length) {
         callback(new Error("CORS_ORIGIN is not configured"));
         return;
       }
