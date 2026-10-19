@@ -12,6 +12,7 @@ export interface Item {
   dateReported: string;
   categoryId: string;
   quantity?: number;
+  isOwner?: boolean;
 }
 
 export interface Category {
@@ -38,6 +39,12 @@ export interface User {
 
 export type UserDoc = Omit<User, "id"> & { password: string };
 export type NewUserBody = Pick<User, "name" | "email"> & { password: string };
+export type CategoryDoc = Pick<Category, "id" | "name" | "icon">;
+export type ClaimDoc = Omit<Claim, "id" | "itemId" | "claimDate"> & {
+  itemId: Types.ObjectId;
+  claimantId: Types.ObjectId;
+  claimDate: Date;
+};
 
 export type ItemDoc = Omit<Item, "id" | "dateReported" | "quantity"> & {
   userId: Types.ObjectId;

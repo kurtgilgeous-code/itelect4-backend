@@ -1,28 +1,36 @@
 import { Router } from "express";
 import type { Request, Response } from "express";
-import { requireAuth } from "../middleware/auth.js";
+import { optionalAuth, requireAuth } from "../middleware/auth.js";
 import Item from "../models/Item.js";
 import type { NewItemBody } from "../types/index.js";
 
 const router = Router();
 
-router.use(requireAuth);
+router.use(optionalAuth);
 
 router.get("/", async (req: Request, res: Response) => {
-  const items = await Item.find({ userId: req.userId as string });
-  res.status(200).json(items);
+  const items = await Item.find().sort({ dateReported: -1 });
+  res.status(200).json(
+    items.map((item) => ({
+      ...item.toJSON(),
+      isOwner: req.userId !== undefined && item.userId.toString() === req.userId,
+    })),
+  );
 });
 
 router.get("/:id", async (req: Request, res: Response) => {
-  const item = await Item.findOne({ _id: req.params.id, userId: req.userId as string });
+  const item = await Item.findById(req.params.id);
   if (!item) {
     res.status(404).json({ message: "Item not found" });
     return;
   }
-  res.status(200).json(item);
+  res.status(200).json({
+    ...item.toJSON(),
+    isOwner: req.userId !== undefined && item.userId.toString() === req.userId,
+  });
 });
 
-router.post("/", async (req: Request, res: Response) => {
+router.post("/", requireAuth, async (req: Request, res: Response) => {
   const body = req.body as NewItemBody;
   const item = await Item.create({
     ...body,
@@ -32,7 +40,7 @@ router.post("/", async (req: Request, res: Response) => {
   res.status(201).json(item);
 });
 
-router.patch("/:id", async (req: Request, res: Response) => {
+router.patch("/:id", requireAuth, async (req: Request, res: Response) => {
   const body = req.body as Partial<NewItemBody>;
   const updates: Record<string, unknown> = {};
   if (body.title !== undefined) updates.title = body.title;
@@ -55,7 +63,7 @@ router.patch("/:id", async (req: Request, res: Response) => {
   res.status(200).json(item);
 });
 
-router.delete("/:id", async (req: Request, res: Response) => {
+router.delete("/:id", requireAuth, async (req: Request, res: Response) => {
   const item = await Item.findOneAndDelete({ _id: req.params.id, userId: req.userId as string });
   if (!item) {
     res.status(404).json({ message: "Item not found" });

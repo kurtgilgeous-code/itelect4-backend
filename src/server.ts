@@ -4,14 +4,10 @@ import { connectDB } from "./config/db.js";
 
 const port = Number(process.env.PORT) || 4000;
 
-try {
-  await connectDB();
-  console.log("✅ Connected to MongoDB");
-
-  app.listen(port, () => {
-    console.log(`🚀 Server listening on port ${port}`);
-  });
-} catch (error) {
+connectDB().catch((error: unknown) => {
   console.error("❌ Failed to connect to MongoDB:", error);
-  process.exitCode = 1;
-}
+});
+
+app.listen(port, () => {
+  console.log(`🚀 Server listening on port ${port}`);
+});
