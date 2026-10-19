@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import type { ErrorRequestHandler } from "express";
 import authRouter from "./routes/auth.js";
 import categoriesRouter from "./routes/categories.js";
+import claimsRouter from "./routes/claims.js";
 import itemsRouter from "./routes/items.js";
 import ensureDatabaseConnection from "./middleware/ensureDatabaseConnection.js";
 
@@ -17,7 +18,12 @@ app.use(
         return;
       }
 
-      const allowedOrigins = process.env.CORS_ORIGIN?.split(",")
+      const defaultDevelopmentOrigins =
+        process.env.NODE_ENV === "production"
+          ? ""
+          : "http://localhost:5173,http://localhost:5174";
+      const allowedOrigins = (process.env.CORS_ORIGIN ?? defaultDevelopmentOrigins)
+        .split(",")
         .map((value) => value.trim())
         .filter(Boolean);
 
@@ -48,6 +54,7 @@ app.get("/api/health", (_req, res) => {
 app.use("/api/auth", authRouter);
 app.use("/api/categories", categoriesRouter);
 app.use("/api/items", itemsRouter);
+app.use("/api/claims", claimsRouter);
 
 app.use((_req, res) => {
   res.status(404).json({

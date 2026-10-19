@@ -56,6 +56,7 @@ const itemSchema = new Schema<ItemDoc>(
         json.id = String(json._id);
         delete json._id;
         delete json.__v;
+        delete json.userId;
         return json;
       },
     },

@@ -32,3 +32,21 @@ export function requireAuth(req: Request, res: Response, next: NextFunction): vo
     res.status(401).json({ message: "Invalid or expired token" });
   }
 }
+
+export function optionalAuth(req: Request, _res: Response, next: NextFunction): void {
+  const authorization = req.get("authorization");
+  const [scheme, token] = authorization?.split(" ") ?? [];
+  const secret = process.env.JWT_SECRET;
+
+  if (scheme === "Bearer" && token && secret) {
+    try {
+      const payload = jwt.verify(token, secret);
+      if (typeof payload !== "string" && typeof payload.userId === "string") {
+        req.userId = payload.userId;
+      }
+    } catch {
+      // Public reads remain available when a stored token has expired.
+    }
+  }
+  next();
+}

@@ -20,8 +20,11 @@ TypeScript, Express, and MongoDB API for the Campus Lost & Found app.
 ## API
 
 - `GET /api/health` reports API and database readiness.
-- `/api/auth` provides registration and login.
+- `POST /api/auth/register` and `POST /api/auth/login` register accounts and issue JWTs.
 - `GET /api/categories` and `GET /api/categories/:id` provide public item categories.
-- `/api/items` provides authenticated, owner-scoped item CRUD.
+- `GET /api/items` and `GET /api/items/:id` provide public item browsing. Creating, editing, and deleting items requires a bearer token and is limited to the item's owner.
+- `POST /api/claims` lets an authenticated user claim an item. Item owners can list and review their item's claims; administrators can list and review all claims.
 
 For deployment, set `MONGODB_URI`, `JWT_SECRET`, and `CORS_ORIGIN` in the host's environment settings. Add the frontend's deployed origin to `CORS_ORIGIN` and redeploy the backend after changing it. Never commit `.env`.
+
+Seed the category collection once with `npm run seed:categories` before using the category filters or item report form. Set newly promoted staff accounts' `role` to `admin` in MongoDB; public registration always creates a student account.
