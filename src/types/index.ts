@@ -38,6 +38,7 @@ export interface User {
 
 export type UserDoc = Omit<User, "id"> & { password: string };
 export type NewUserBody = Pick<User, "name" | "email"> & { password: string };
+export type CategoryDoc = Pick<Category, "id" | "name" | "icon">;
 
 export type ItemDoc = Omit<Item, "id" | "dateReported" | "quantity"> & {
   userId: Types.ObjectId;
