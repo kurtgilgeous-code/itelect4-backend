@@ -1,3 +1,4 @@
+import { ApiError } from '@google/genai';
 import jwt from 'jsonwebtoken';
 import request from 'supertest';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -61,5 +62,21 @@ describe('POST /api/ai', () => {
       ]),
     );
     expect(reviewProject).not.toHaveBeenCalled();
+  });
+
+  it('explains when Gemini is temporarily unavailable', async () => {
+    vi.mocked(reviewProject).mockRejectedValueOnce(
+      new ApiError({ status: 503, message: 'Model temporarily unavailable' }),
+    );
+
+    const response = await request(app)
+      .post('/api/ai')
+      .set('Authorization', ['Bearer', tokenFor('student-503')].join(' '))
+      .send({ prompt: 'A campus app that helps students find lost belongings.' });
+
+    expect(response.status).toBe(503);
+    expect(response.body.message).toBe(
+      'The AI service is temporarily busy. Please wait a moment and try again.',
+    );
   });
 });

@@ -40,6 +40,12 @@ aiRouter.post("/", aiLimiter, async (req: Request, res: Response) => {
       return;
     }
 
+    if (error instanceof ApiError && error.status === 503) {
+      console.error(error);
+      res.status(503).json({ message: "The AI service is temporarily busy. Please wait a moment and try again." });
+      return;
+    }
+
     if (error instanceof ApiError || error instanceof AiReplyError) {
       console.error(error);
       res.status(502).json({ message: "The AI service did not answer properly. Try again." });
