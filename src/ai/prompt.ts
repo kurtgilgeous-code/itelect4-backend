@@ -1,6 +1,6 @@
 import type { Review } from "../schemas/review.js";
 
-export const MODEL = "gemini-flash-latest";
+export const MODEL = "gemini-flash-lite-latest";
 
 export const SYSTEM_PROMPT = `You review student project descriptions for ITELECT4 at De La Salle Lipa.
 
