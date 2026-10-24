@@ -6,8 +6,8 @@ TypeScript, Express, and MongoDB API for the Campus Lost & Found app.
 
 ## Live deployment
 
-- API deployment: [https://itelect4-backend.vercel.app](https://itelect4-backend.vercel.app)
-- Frontend: [https://itelect4-project-it4b.vercel.app](https://itelect4-project-it4b.vercel.app)
+- API deployment: [https://itelect4-backend-rosy.vercel.app](https://itelect4-backend-rosy.vercel.app)
+- Frontend: [https://itelect4-project-it4b-chi.vercel.app](https://itelect4-project-it4b-chi.vercel.app)
 
 ## Setup
 
@@ -16,7 +16,7 @@ TypeScript, Express, and MongoDB API for the Campus Lost & Found app.
 3. Start the API with `npm run dev`.
 4. Seed the public item categories with `npm run seed:categories`.
 
-`CORS_ORIGIN` is a comma-separated list of exact browser origins. It is configured above for local frontend development.
+`CORS_ORIGIN` is a comma-separated list of exact browser origins. For local frontend development, set it to `http://localhost:5173,http://localhost:5174`.
 
 ## Scripts
 
