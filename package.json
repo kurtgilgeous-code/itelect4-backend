@@ -8,8 +8,9 @@
     "try-ai": "tsx src/try-ai.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "typecheck": "tsc --noEmit",
-    "seed:categories": "tsx src/scripts/seedCategories.ts"
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.test.json",
+    "seed:categories": "tsx src/scripts/seedCategories.ts",
+    "test": "vitest run --reporter=verbose"
   },
   "dependencies": {
     "@google/genai": "^2.30.0",
@@ -28,7 +29,10 @@
     "@types/express": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.13.10",
+    "@types/supertest": "^7.2.1",
+    "supertest": "^7.3.1",
     "tsx": "^4.19.3",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.2",
+    "vitest": "^5.0.5"
   }
 }
